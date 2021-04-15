@@ -1,0 +1,30 @@
+version: "2.1"
+services:
+  # https://hub.docker.com/r/itsthenetwork/nfs-server-alpine
+  nfs:
+    image: itsthenetwork/nfs-server-alpine:12
+    container_name: iaas-nfs
+    restart: unless-stopped
+    privileged: true
+    environment:
+      - SHARED_DIRECTORY=/shared
+    volumes:
+      - /data/shared:/shared
+    ports:
+      - 2049:2049
+  # https://github.com/get-set/infra-docker-compose
+  # https://discourse.pi-hole.net/t/solve-dns-resolution-in-other-containers-when-using-docker-pihole/31413
+  dns:
+    image: andyshinn/dnsmasq
+    container_name: iaas-dns
+    restart: unless-stopped
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+    ports:
+      - 9.112.249.39:53:53/tcp
+      - 9.112.249.39:53:53/udp
+    volumes:
+      - './data/dns/etc_dnsmasq.conf:/etc/dnsmasq.conf'
+      - './data/dns/etc_resolv.dnsmasq:/etc/resolv.dnsmasq'
+      - './data/dns/etc_dnsmasq.hosts:/etc/dnsmasq.hosts'

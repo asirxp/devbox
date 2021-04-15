@@ -1,0 +1,48 @@
+version: "3.7"
+services:
+  ######
+  nexus:
+    image: sonatype/nexus3:3.29.2
+    container_name: nexus
+    restart: always
+    volumes:
+      - /data/nexus:/nexus-data
+    environment:
+      VIRTUAL_HOST: nexus.9.112.249.39.nip.io
+      VIRTUAL_PORT: 8081
+  ######
+  registry-httpd:
+    image: httpd:2.4.43
+    container_name: registry-httpd
+    restart: always
+    # Security enhancement
+    ports:
+      - "127.0.0.1:18444:8444"
+    depends_on:
+      - nexus
+    volumes:
+      - ./conf/docker-registry-httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./conf/docker-registry-httpd/conf.d:/usr/local/apache2/conf.d
+    environment:
+      VIRTUAL_HOST: registry.9.112.249.39.nip.io
+      VIRTUAL_PORT: 8444
+  ######
+  dockerhub-httpd:
+    image: httpd:2.4.43
+    container_name: dockerhub-httpd
+    restart: always
+    # Security enhancement
+    ports:
+      - "127.0.0.1:18445:8445"
+    depends_on:
+      - nexus
+    volumes:
+      - ./conf/docker-hub-httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./conf/docker-hub-httpd/conf.d:/usr/local/apache2/conf.d
+    environment:
+      VIRTUAL_HOST: dockerhub.9.112.249.39.nip.io
+      VIRTUAL_PORT: 8445
+networks:
+  default:
+    external:
+      name: devops-nip

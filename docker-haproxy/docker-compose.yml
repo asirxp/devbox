@@ -1,0 +1,13 @@
+version: "3.7"
+
+services:
+  haproxy:
+    image: haproxy:1.9.8
+    network_mode: "host"
+    restart: always
+    #ports:
+    #  - '80:80'
+    #  - '443:443'
+    #  - '1099:1099'
+    volumes:
+      - ./haproxy:/usr/local/etc/haproxy

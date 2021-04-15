@@ -1,0 +1,27 @@
+version: "2.4"
+
+services:
+###
+  traefik:
+    image: "traefik:v2.2"
+    healthcheck:
+      test: 
+        - CMD
+        - traefik
+        - healthcheck
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "127.0.0.1:7090:80"
+      - "127.0.0.1:7453:443"
+      - "127.0.0.1:18080:8080"
+    volumes:
+      - ./conf/traefik.yaml:/etc/traefik/traefik.yaml
+      - ./conf/certs/:/certs/
+      - /var/run/docker.sock:/var/run/docker.sock
+###
+networks:
+  default:
+    external:
+      name: devops-xip

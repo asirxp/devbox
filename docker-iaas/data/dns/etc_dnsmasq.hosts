@@ -1,0 +1,9 @@
+# 172.31.0.254	dns.example.com	proxy.example.com jira.example.com docs.example.com ldap.example.com git.example.com registry.example.com
+#9.110.179.202	gogs		gogs.private.cloud.com
+#9.110.179.202	nexus		nexus.private.cloud.com
+#9.110.179.202	devops		devops.private.cloud.com
+#9.110.179.202	registry	registry.private.cloud.com
+#9.110.179.202	dockerhub	dockerhub.private.cloud.com
+9.110.179.202 my.devops.local.cluster java.devops.local.cluster python.devops.local.cluster php.devops.local.cluster
+9.110.179.230 my.devbox.local.cluster apple.devbox.local.cluster mapple.devbox.local.cluster pear.devbox.local.cluster
+

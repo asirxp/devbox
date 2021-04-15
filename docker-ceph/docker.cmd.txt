@@ -1,0 +1,266 @@
+   82  cp ../ceph-docker-compose/docker-compose.yml ./
+   83  cp ../ceph-docker-compose/.env ./my.env
+  124  vim docker-compose.yaml 
+  125  rm -rf docker-compose.yaml 
+  145  ls -l ceph-docker-compose/
+  163  mkdir my-ceph-docker
+  165  cd my-ceph-docker/
+  168  git clone https://github.com/ricardoasmarques/ceph-dev-docker
+  178  cd ceph-dev-docker/
+  182  ls -l /repos/sandbox/my-ceph-docker/ceph-ccache
+  183  ls -l /repos/sandbox/my-ceph-docker/ceph
+  188  NAME=ceph-dev CCACHE=/repos/sandbox/my-ceph-docker/ceph-ccache CEPH=/repos/sandbox/my-ceph-docker/ceph VERSION=octopus ./setup.sh
+  196  history | grep docker
+  197  docker-compose exec mon1 ceph osd pool application enable kube rbd
+  207  docker-compose exec mon1 ceph osd pool application enable kube rbd
+  208  docker ps | grep mon
+  209  docker ps | grep mon | grep ceph
+  212  cd ceph-docker-compose/
+  214  docker-compose exec mon1 ceph osd pool application enable kube rbd
+  225  docker images | grep ceph 
+  227  docker ps | grep ceph-dev
+  228  docker exec -it ceph-dev zsh
+  230  docker ps | grep ceph-dev
+  231  docker exec -it ceph-dev zsh
+  233  docker node ls
+  234  docker network ls
+  257  docker images | grep ceph | grep daemon
+  286  cd ceph-docker-compose/
+  306  vim site-docker.yml.sample 
+  307  cp site-docker.yml.sample site-docker.yml
+  308   ansible-playbook -i hosts.ini site-docker.yml 2>&1 | tee make.log
+  312   ansible-playbook -i hosts.ini site-docker.yml 2>&1 | tee make.log
+  351  docker logs -f ceph-osd 
+  352  docker stop ceph-osd 
+  360  docker rm ceph-osd 
+  362  docker logs -f ceph-osd 
+  363  docker stop ceph-osd 
+  364  docker rm ceph-osd 
+  366  docker logs -f ceph-osd 
+  369  docker stop ceph-osd 
+  370  docker rm ceph-osd 
+  372  docker logs -f ceph-osd 
+  373  docker stop ceph-osd 
+  374  docker rm ceph-osd 
+  376  docker logs -f ceph-osd 
+  378  docker logs -f ceph-mgr 
+  390  docker exec ceph-mon ceph auth get client.bootstrap-rgw -o /var/lib/ceph/bootstrap-rgw/ceph.keyring
+  398  docker logs -f ceph-rgw 
+  399  docker start ceph-rgw 
+  400  docker logs -f ceph-rgw 
+  412  docker logs -f mds 
+  413  docker stop mds 
+  414  docker rm mds 
+  417  docker logs -f ceph-mds 
+  420  cd docker-leanote/
+  421  docker-compose down
+  422  docker ps
+  426  cd ceph-docker-compose/
+  430  docker restart ceph-mon 
+  446  docker exec -it ceph-mon ceph auth get client.bootstrap-osd -o /var/lib/ceph/bootstrap-osd/ceph.keyring
+  460  docker logs -f ceph-mgr 
+  467  docker exec ceph-mon ceph -s
+  473  docker exec ceph-mon ceph -s
+  477  docker exec ceph-mgr ceph config set mgr mgr/dashboard/server_port 18080
+  478  docker exec ceph-mon ceph -s
+  480  docker exec ceph-mgr ceph config set mgr mgr/dashboard/ssl false
+  481  docker exec ceph-mon ceph -s
+  484  docker exec ceph-mon ceph -s
+  489  ansible-playbook -i hosts.ini site-docker.yml 2>&1 | tee make.log
+  502  find ./ -name "*docker*"
+  503  vim group_vars/docker-commons.yml.sample 
+  513  docker images | grep ceph | grep daemon
+  520  docker ps | grep ceph-mon
+  521  docker logs -f ceph-mon
+  525  rpm -qf /usr/libexec/docker/docker-proxy-current
+  528  cd docker-nexus/
+  530  vim docker-compose.yml
+  531  cd ../docker-
+  532  cd ../docker-leanote/
+  534  vim docker-compose.yml
+  544  cd ceph-docker-compose/
+  546  vim docker-compose.yml
+  551  docker rm ceph-mon 
+  553  docker logs -f ceph-mon 
+  554  docker exec ceph-mgr ceph mgr services
+  555  docker exec ceph-mgr ceph mgr module enable dashboard
+  556  docker exec ceph-mgr ceph mgr services
+  557  docker exec ceph-mgr ceph dashboard create-self-signed-cert
+  559  docker exec ceph-mgr ceph mgr module disable dashboard
+  560  docker exec ceph-mgr ceph mgr module enable dashboard
+  562  docker exec ceph-mgr ceph config set mgr mgr/dashboard/server_addr 9.110.179.202
+  563  docker exec ceph-mgr ceph config set mgr mgr/dashboard/server_port 10080
+  564  docker exec ceph-mgr ceph mgr services
+  566  docker exec ceph-mgr ceph mgr services
+  568  docker exec ceph-mgr ceph config set mgr mgr/dashboard/server_port 10080
+  569  docker exec ceph-mgr ceph mgr services
+  570  docker restart ceph-mgr 
+  571  docker exec ceph-mgr ceph mgr services
+  582  docker exec ceph-mgr ceph mgr services
+  592  docker exec ceph-mgr ceph mgr services
+  593  docker restart ceph-mgr 
+  594  docker exec ceph-mgr ceph mgr services
+  604  docker ps
+  607  cd ceph-docker-compose/
+  608  docker-compose down
+  611  docker ps
+  612  docker stop ceph-mds ceph-osd ceph-mgr ceph-mon 
+  613  docker ps
+  614  docker stop ceph-dev 
+  615  docker ps
+  616  docker start ceph-mds ceph-osd ceph-mgr ceph-mon 
+  617  docker ps
+  618  docker exec ceph-mon ceph -s
+  619  docker exec ceph-mgr ceph mgr services
+  621  docker exec ceph-mon ceph -s
+  622  docker exec ceph-mon ceph config set mgr mgr/dashboard/server_addr mgr
+  623  docker exec ceph-mgr ceph mgr services
+  624  docker ps
+  625  docker exec ceph-mgr config set mgr mgr/dashboard/server_addr \*
+  626  docker exec ceph-mgr ceph config set mgr mgr/dashboard/server_addr \*
+  627  docker exec ceph-mgr ceph mgr services
+  628  docker restart ceph-mgr 
+  629  docker exec ceph-mgr ceph mgr services
+  631  docker exec ceph-mgr ceph config set mgr mgr/dashboard/server_addr 9.110.179.202
+  632  docker restart ceph-mgr 
+  634  docker exec ceph-mgr ceph mgr services
+  636  docker logs -f ceph-mgr 
+  637  docker restart ceph-mgr 
+  638  docker logs -f ceph-mgr 
+  642  docker exec ceph-mgr ceph mgr services
+  643  docker logs -f ceph-mgr  > /tmp/oc.log
+  645  docker exec ceph-mgr ceph mgr services
+  651  docker ps
+  654  docker stop ceph-mds ceph-osd ceph-mgr ceph-mon 
+  655  docker ps
+  656  docker ps -a
+  657  docker images
+  667  docker logs -f ceph-mgr 
+  670  docker logs -f ceph-mgr 
+  672  docker logs -f ceph-mgr 
+  679  docker logs -f ceph-osd 
+  690  docker logs -f ceph-rgw 
+  691  docker start ceph-rgw 
+  692  docker logs -f ceph-rgw 
+  693  docker start ceph-rgw 
+  694  docker logs -f ceph-rgw 
+  695  docker stop ceph-rgw 
+  696  docker rm ceph-rgw 
+  698  docker logs -f ceph-rgw 
+  704  docker restart ceph-mon 
+  706  docker exec -it ceph-mon ceph -s
+  707  docker exec -it ceph-mon ceph mgr module enable dashboard
+  708  docker exec -it ceph-mon ceph dashboard create-self-signed-cer
+  709  docker exec -it ceph-mon ceph mgr module disable dashboard
+  710  docker exec -it ceph-mon ceph mgr module enable dashboard
+  711  docker exec -it ceph-mon ceph mgr service
+  712  docker exec -it ceph-mon ceph mgr services
+  714  docker exec ceph-mon ceph config set mgr mgr/dashboard/ssl false
+  715  docker exec -it ceph-mon ceph mgr services
+  716  docker restart ceph-mgr 
+  717  docker exec ceph-mon ceph mgr services
+  719  docker exec -it ceph-mon ceph mgr services
+  720  docker exec ceph-mon ceph config set mgr mgr/dashboard/server_port 10080
+  721  docker exec -it ceph-mon ceph mgr services
+  722  docker restart ceph-mgr 
+  723  docker exec -it ceph-mon ceph mgr services
+  725  docker exec -it ceph-mon ceph mgr module disable dashboard
+  726  docker exec -it ceph-mon ceph mgr module enable dashboard
+  727  docker exec -it ceph-mon ceph mgr services
+  728  docker exec ceph-mon ceph config set mgr mgr/dashboard/server_port 10080
+  729  docker exec -it ceph-mon ceph mgr services
+  731  docker stop ceph-mgr 
+  732  docker rm ceph-mgr 
+  745  docker exec ceph-mon ceph config set mgr mgr/dashboard/ssl false
+  746  docker exec -it ceph-mon ceph mgr module enable dashboard
+  747  docker exec -it ceph-mon ceph mgr services
+  749  docker ps
+  750  docker stop ceph-mgr ceph-mon 
+  751  docker rm ceph-mgr ceph-mon 
+  752  docker ps 
+  753  docker ps  -a
+  783  docker restart ceph-mon 
+  787  docker exec -it ceph-mon ceph -s
+  788  docker exec -it ceph-mon ceph mgr services
+  789  docker exec ceph-mon ceph -s
+  790  docker exec ceph-mon ceph dashboard create-self-signed-cert
+  791  docker exec ceph-mon ceph mgr module enable dashboard
+  792  docker exec ceph-mon ceph dashboard create-self-signed-cert
+  794  docker exec ceph-mon ceph -s
+  795  docker exec ceph-mon ceph mgr services
+  796  docker restart ceph-mgr 
+  797  docker exec ceph-mon ceph mgr services
+  802  docker exec ceph-mon ceph auth get client.bootstrap-osd -o /var/lib/ceph/bootstrap-osd/ceph.keyring
+  805  docker exec ceph-mon ceph auth get client.bootstrap-rgw -o /var/lib/ceph/bootstrap-rgw/ceph.keyring
+  807  docker exec ceph-mon ceph -s
+  810  docker exec ceph-mon ceph -s
+  814  docker restart ceph-mon 
+  815  docker exec ceph-mon ceph -s
+  817  docker restart ceph-mon 
+  818  docker exec ceph-mon ceph -s
+  820  docker stop ceph-mds ceph-osd ceph-mgr ceph-mon 
+  821  docker rm ceph-mds ceph-osd ceph-mgr ceph-mon ceph-rgw 
+  840  docker images | grep ceph | grep stable
+  854  docker restart ceph-mon 
+  855  docker exec ceph-mon ceph -s
+  860  history | grep docker
+  861  docker exec ceph-mon ceph mgr module enable dashboard
+  862  docker exec ceph-mon ceph dashboard create-self-signed-cert
+  863  docker exec ceph-mon ceph -s
+  864  docker exec ceph-mon ceph mgr services
+  871  docker logs -f ceph-mds 
+  878  docker logs -f ceph-mds 
+  886  docker logs -f ceph-rgw 
+  887  docker start ceph-rgw 
+  888  docker logs -f ceph-rgw 
+  891  docker ps
+  893  docker stop ceph-mds ceph-osd ceph-mgr ceph-mon 
+  897  docker ps
+  940  mv 1 docker-compose.yml
+  942  vim docker-compose.yml 
+  943  docker pull ceph/daemon:latest-luminous
+  945  vim docker-compose.yml 
+  947  docker-compose up 
+  948  vim docker-compose.yml 
+  949  docker-compose up 
+  952  docker stop ceph-mds ceph-osd ceph-mgr ceph-mon
+  953  docker rm ceph-mds ceph-osd ceph-mgr ceph-mon
+  955  docker-compose up 
+  956  docker rm ceph-rgw
+  957  docker ps
+  958  docker-compose up ceph-rgw
+  959  docker-compose down
+  960  docker ps
+  961  docker ps -a
+  983  docker logs -f ceph-osd 
+  986  docker start ceph-osd 
+  987  docker logs -f ceph-osd 
+  988  docker logs -f ceph-mon 
+  989  docker restart ceph-mon 
+  990  docker restart ceph-mgr
+  991  docker logs -f ceph-mgr 
+  995  history | grep docker
+  996  docker exec ceph-mon ceph -s
+  997  docker ps
+  998  docker exec ceph-mon ceph -s
+ 1003  docker exec ceph-mon ceph -s
+ 1004  docker logs -f ceph-rgw 
+ 1005  docker exec ceph-mon ceph -s
+ 1009  docker-compose restart ceph-mon ceph-mgr
+ 1012  docker ps
+ 1015  docker-compose restart ceph-mon ceph-mgr
+ 1016  docker exec ceph-mon ceph -s
+ 1019  cd ceph-docker-compose/
+ 1029  git clone https://github.com/VasiliyLiao/ceph-docker-compose.git
+ 1031  cd ceph-docker-compose/
+ 1051  vim docker-compose.yml 
+ 1052  docker ps
+ 1054  docker rm ceph-mds ceph-osd ceph-mgr ceph-mon
+ 1055  docker ceph-rgw
+ 1057  docker rm ceph-rgw
+ 1060  docker-compose up
+ 1061  docker exec ceph-mon-1 ceph -s
+ 1062  docker ps
+ 1063  docker exec ceph-mon-1 ceph -s
+ 1064  history | grep docker
+ 1065  history | grep docker > docker.cmd.txt

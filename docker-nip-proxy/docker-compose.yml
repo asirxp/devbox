@@ -1,0 +1,19 @@
+version: "3.7"
+services:
+  ######
+  nginx-proxy:
+    image: jwilder/nginx-proxy:0.8.0
+    container_name: nginx-proxy-nip
+    restart: always
+    #privileged: true
+    ports:
+      - "127.0.0.1:7080:80"
+      - "127.0.0.1:7443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - ./conf/certs:/etc/nginx/certs:ro
+      - ./conf/nginx-proxy-conf.d:/etc/nginx/conf.d
+networks:
+  default:
+    external:
+      name: devops-nip

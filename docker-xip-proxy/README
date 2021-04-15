@@ -1,0 +1,27 @@
+https://github.com/BretFisher/compose-dev-tls
+https://doc.traefik.io/traefik/getting-started/quick-start/
+
+# Use static ip address for a container
+https://forums.docker.com/t/static-ipv4-for-container-in-pre-existing-external-network/64634/2
+[docker compose external network ipv4_address]
+..........................................................
+version: '3'
+
+services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    networks:
+      nginx-proxy:
+        ipv4_address: "172.20.0.123"
+    ports:
+      - "80:80"
+      - "443:443"
+
+networks:
+  default:
+    external:
+      name: nginx-proxy
+  nginx-proxy:
+    external: true
+..........................................................

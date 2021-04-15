@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+  dns:
+    image: andyshinn/dnsmasq
+    container_name: iaas-dns
+    privileged: true
+    cap_add:
+      - NET_ADMIN
+#    networks:
+#      - devops
+    ports:
+      - "53:53"
+      - "53:53/udp"
+    volumes:
+      - './data/dns/etc_dnsmasq.conf:/etc/dnsmasq.conf'
+      - './data/dns/etc_resolv.dnsmasq:/etc/resolv.dnsmasq'
+      - './data/dns/etc_dnsmasq.hosts:/etc/dnsmasq.hosts'
+#
+#networks:
+#  devops:
+#    name: devops

@@ -1,0 +1,18 @@
+version: '3.5'
+
+services:
+  flask-app-service:
+    build: ./app
+    restart: always
+    labels:
+      traefik.enable: true
+      traefik.http.routers.flask.rule: Host(`flask.9.112.249.39.xip.io`)
+      traefik.http.routers.flask.entrypoints: websecure
+      traefik.http.routers.flask.tls: true    
+    volumes:
+      - ./app:/usr/src/app
+      - .:/user/src
+networks:
+  default:
+    external:
+      name: devops-xip

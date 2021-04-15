@@ -1,0 +1,104 @@
+global
+  user root
+  group root
+
+defaults
+  log     global
+  mode    http
+  balance roundrobin
+  timeout connect 5000
+  timeout client  50000
+  timeout server  50000
+
+frontend stats
+  bind *:1099
+  stats enable
+  stats uri /stats
+  stats refresh 90s
+  stats auth admin:password
+
+#frontend fe-api
+#  bind *:6443
+#  mode tcp
+#  option tcplog
+#  tcp-request inspect-delay 10s
+#  tcp-request content accept if { req_ssl_hello_type 1 }
+#  use_backend devops-api   if { req.ssl_sni -m end api.devops.local.ocp.cluster }
+#
+#backend devops-api
+#  balance source
+#  mode tcp
+#  option ssl-hello-chk
+#  server main lb.devops.local.ocp.cluster:6443
+#
+frontend http
+    bind *:80
+    mode http
+    option tcplog
+    log global
+#    use_backend devops-http   if { hdr(host) -m end apps.devops.local.ocp.cluster }
+    default_backend router_http_backend
+
+#backend devops-http
+#    balance source
+#    mode http
+#    server main lb.devops.local.ocp.cluster:80
+#
+backend router_http_backend
+    balance leastconn
+    mode http
+    server      router-0 127.0.0.1:1080 check
+    #server      router1 <infra-2_IP>:2080 check
+    #server      router2 <infra-3_IP>:2080 check
+
+frontend https
+    bind *:443
+    mode tcp
+    option tcplog
+    log global
+    tcp-request inspect-delay 5s
+    tcp-request content accept if { req_ssl_hello_type 1 }
+    use_backend nginx-proxy-nip if { req.ssl_sni -m end .9.112.249.39.nip.io }
+    use_backend nginx-proxy-xip if { req.ssl_sni -m end .9.112.249.39.xip.io }
+#    use_backend devops-https   if { req.ssl_sni -m end apps.devops.local.ocp.cluster }
+    #default_backend b_deadend_sni
+    default_backend router_https_backend
+
+backend nginx-proxy-nip
+  mode tcp
+  balance roundrobin
+  option ssl-hello-chk
+  server proxy-0 127.0.0.1:7443 check
+
+backend nginx-proxy-xip
+  mode tcp
+  balance roundrobin
+  option ssl-hello-chk
+  server proxy-0 127.0.0.1:7453 check
+
+#backend devops-https
+#  balance source
+#  mode tcp
+#  option ssl-hello-chk
+#  server main lb.devops.local.ocp.cluster:443
+
+backend router_https_backend
+    balance leastconn
+    mode tcp
+    server      router-0 127.0.0.1:1443 check
+    #server      router1 <infra-2_IP>:2443 check
+    #server      router2 <infra-3_IP>:2443 check
+
+
+#backend b_deadend
+#  mode http
+#  log global
+#  option httplog
+
+#backend b_deadend_sni
+#  mode tcp
+#  log global
+#  option tcplog
+#  no option accept-invalid-http-response
+#  no option http-server-close
+                                             

@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+  nginx:
+    image: nginx:alpine
+    restart: always
+    labels:
+      traefik.enable: true
+      traefik.http.routers.nginx.rule: Host(`nginx.9.112.249.39.xip.io`)
+      traefik.http.routers.nginx.entrypoints: websecure
+      traefik.http.routers.nginx.tls: true
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./public_html:/app
+networks:
+  default:
+    external:
+      name: devops-xip        

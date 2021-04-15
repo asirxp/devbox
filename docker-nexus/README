@@ -1,0 +1,49 @@
+# Nexus configuration
+https://qiita.com/leechungkyu/items/86cad0396cf95b3b6973
+https://barryvanacker.nl/tag/docker-compose/
+https://www.ivankrizsan.se/2016/06/09/create-a-private-docker-registry/
+
+# Nexus SSL setup
+https://github.com/devodev/nexus-docker-registry
+https://github.com/schnell18/docker-nexus
+https://github.com/Misterhex/nginx-with-nexus-docker-registry
+
+https://stackoverflow.com/questions/55067113/this-node-is-not-a-swarm-manager-error-but-im-not-using-docker-swarm
+
+# AIO local devops environment
+https://github.com/Springjunky/docker-local-build-environment
+https://stefanprodan.com/2016/docker-private-registry-nexus-nginx/
+
+# Nexus local maven repository configuration
+https://adityawagle.com/starting-a-nexus-maven-repository-using-docker-for-testing-or-demos/
+https://github.com/sonatype/nexus-book-examples/blob/master/maven/settings/settings.xml
+
+# Import certs in java
+https://horochovec.dev/using-sonatype-nexus-repository-manager-with-https-for-docker-private-registry/
+https://github.com/TerrenceMiao/nexus/wiki/Setup-Docker-Private-Registry-in-Nexus-Repository-OSS-3.0.0
+https://github.com/marcelmaatkamp/nexus-ssl-nodepki
+# Import certs in java
+keytool -printcert -rfc -sslserver hostname > hostname.pem
+keytool -importcert -file hostname.pem -keystore $(/usr/libexec/java_home)/jre/lib/security/cacerts -storepass changeit
+# E.g.:
+935  keytool -printcert -sslserver 9.110.179.202:8443 -rfc > nexus.crt
+949  keytool -importcert -file nexus.crt -keystore /etc/pki/java/cacerts -storepass changeit
+
+# Multiple domains setup
+https://serverfault.com/questions/1011561/docker-based-reverse-proxy-with-nginx-for-multiple-domains
+https://www.freecodecamp.org/news/docker-nginx-letsencrypt-easy-secure-reverse-proxy-40165ba3aee2/ [very good***]
+https://blog.ssdnodes.com/blog/host-multiple-websites-docker-nginx/ [good***]
+https://www.datanovia.com/en/lessons/how-host-multiple-https-websites-on-one-server/ [good]
+https://medium.com/@francoisromain/host-multiple-websites-with-https-inside-docker-containers-on-a-single-server-18467484ab95
+https://carlosvin.github.io/posts/reverse-proxy-multidomain-docker/en/ [good example, non-https-works]
+//////
+nginx-proxy: (3)
+  image: jwilder/nginx-proxy
+  ports:
+    - "80:80"
+    - "443:443"
+  volumes:
+    - /var/run/docker.sock:/tmp/docker.sock:ro
+//////
+https://olex.biz/2019/09/hosting-with-docker-nginx-reverse-proxy-letsencrypt/ [good]
+

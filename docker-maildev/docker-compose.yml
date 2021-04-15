@@ -1,0 +1,20 @@
+version: '2'
+services:
+    maildev:
+        restart: unless-stopped
+        image: maildev/maildev
+        privileged: true
+        dns: 9.0.146.50
+        ports:
+          - '1025:25'
+        #networks:
+        #    - proxy
+        #    - maildev
+        environment:
+          VIRTUAL_HOST: mail.9.112.249.39.nip.io
+          VIRTUAL_PORT: 80
+        command: bin/maildev --web 80 --smtp 25
+networks:
+  default:
+    external:
+      name: devops-nip        

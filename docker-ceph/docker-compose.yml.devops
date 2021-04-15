@@ -1,0 +1,147 @@
+version: "3"
+
+#networks:
+#  cluster-net:
+#    external:
+#      name: ceph-cluster-net
+
+services:
+
+  mon-1:
+    image: ceph/daemon:${CEPH_CONTAINER_VERSION}
+    network_mode: host
+    container_name: ceph-mon-1
+    restart: always
+    command: "mon"
+    environment:
+      MON_IP: ${MON1_IP}
+      CEPH_PUBLIC_NETWORK: ${MON1_CEPH_PUBLIC_NETWORK}
+      LANG: ${LANG}
+      TZ: ${TZ}
+    volumes:
+      - ${VOLUMES_PATH}/ceph:/etc/ceph
+      - ${VOLUMES_PATH}/lib/:/var/lib/ceph/
+    #networks:
+    #  - cluster-net
+
+  mgr-1:
+    image: ceph/daemon:${CEPH_CONTAINER_VERSION}
+    network_mode: host
+    container_name: ceph-mgr-1
+    restart: always
+    command: "mgr"
+    environment:
+      LANG: ${LANG}
+      TZ: ${TZ}
+    volumes:
+      - ${VOLUMES_PATH}/ceph:/etc/ceph
+      - ${VOLUMES_PATH}/lib/:/var/lib/ceph/
+    depends_on:
+      - mon-1
+    #networks:
+    #  - cluster-net
+    #ports:
+    #  - ${DASHBOARD_PORT}:${INTERNAL_DASHBOARD_PORT}
+
+  osd-1:
+    pid: host
+    privileged: true
+    image: ceph/daemon:${CEPH_CONTAINER_VERSION}
+    network_mode: host
+    container_name: ceph-osd-1
+    restart: always
+    command: "osd_directory"
+    environment:
+      LANG: ${LANG}
+      TZ: ${TZ}
+    volumes:
+      - ${VOLUMES_PATH}/ceph:/etc/ceph
+      - ${VOLUMES_PATH}/lib/:/var/lib/ceph/
+      - ${OSD_PATH}/osd-1:/var/lib/ceph/osd
+    depends_on:
+      - mon-1
+    #networks:
+    #  - cluster-net
+
+  osd-2:
+    pid: host
+    privileged: true
+    image: ceph/daemon:${CEPH_CONTAINER_VERSION}
+    network_mode: host
+    container_name: ceph-osd-2
+    restart: always
+    command: "osd_directory"
+    environment:
+      LANG: ${LANG}
+      TZ: ${TZ}
+    volumes:
+      - ${VOLUMES_PATH}/ceph:/etc/ceph
+      - ${VOLUMES_PATH}/lib/:/var/lib/ceph/
+      - ${OSD_PATH}/osd-2:/var/lib/ceph/osd
+    depends_on:
+      - mon-1
+    #networks:
+    #  - cluster-net
+
+  osd-3:
+    pid: host
+    privileged: true
+    image: ceph/daemon:${CEPH_CONTAINER_VERSION}
+    network_mode: host
+    container_name: ceph-osd-3
+    restart: always
+    command: "osd_directory"
+    environment:
+      LANG: ${LANG}
+      TZ: ${TZ}
+    volumes:
+      - ${VOLUMES_PATH}/ceph:/etc/ceph
+      - ${VOLUMES_PATH}/lib/:/var/lib/ceph/
+      - ${OSD_PATH}/osd-3:/var/lib/ceph/osd
+    depends_on:
+      - mon-1
+    #networks:
+    #  - cluster-net
+
+  rgw-1:
+    image: ceph/daemon:${CEPH_CONTAINER_VERSION}
+    network_mode: host
+    container_name: ceph-rgw-1
+    restart: always
+    command: "rgw"
+    environment:
+      DEBUG: verbose
+      LANG: ${LANG}
+      TZ: ${TZ}
+    volumes:
+      - ${VOLUMES_PATH}/ceph:/etc/ceph
+      - ${VOLUMES_PATH}/lib/:/var/lib/ceph/
+    depends_on:
+      - osd-1
+      - osd-2
+      - osd-3
+    #networks:
+    #  - cluster-net
+    #ports:
+    #  - ${RGW_PORT}:7480
+
+  mds-1:
+    image: ceph/daemon:${CEPH_CONTAINER_VERSION}
+    network_mode: host
+    container_name: ceph-mds-1
+    restart: always
+    command: "mds"
+    hostname: "ceph-mds-1"
+    environment:
+      CEPHFS_CREATE: 1
+      LANG: ${LANG}
+      TZ: ${TZ}
+    volumes:
+      - ${VOLUMES_PATH}/ceph:/etc/ceph
+      - ${VOLUMES_PATH}/lib/:/var/lib/ceph/
+    depends_on:
+      - osd-1
+      - osd-2
+      - osd-3
+    #networks:
+    #  - cluster-net

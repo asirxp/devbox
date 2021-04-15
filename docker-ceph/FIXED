@@ -1,0 +1,176 @@
+https://github.com/VasiliyLiao/ceph-docker-compose
+
+[root@devops docker-ceph]# cat data/ceph/ceph/ceph.conf
+[global]
+fsid = bed7369d-ab47-4c7a-ab04-55d89a5ca82b
+mon initial members = devops
+mon host = 9.110.179.202
+public network = 9.110.179.0/24
+cluster network = 9.110.179.0/24
+osd journal size = 100
+log file = /dev/null
+osd pool default size = 1
+mon_allow_pool_delete = true
+
+[osd]
+osd crush chooseleaf type = 0
+[root@devops docker-ceph]# history | grep docker | grep ceph
+  114  docker pull ceph/daemon:latest-luminous
+  123  docker stop ceph-mds ceph-osd ceph-mgr ceph-mon
+  124  docker rm ceph-mds ceph-osd ceph-mgr ceph-mon
+  127  docker rm ceph-rgw
+  129  docker-compose up ceph-rgw
+  154  docker logs -f ceph-osd 
+  157  docker start ceph-osd 
+  158  docker logs -f ceph-osd 
+  159  docker logs -f ceph-mon 
+  160  docker restart ceph-mon 
+  161  docker restart ceph-mgr
+  162  docker logs -f ceph-mgr 
+  167  docker exec ceph-mon ceph -s
+  169  docker exec ceph-mon ceph -s
+  174  docker exec ceph-mon ceph -s
+  175  docker logs -f ceph-rgw 
+  176  docker exec ceph-mon ceph -s
+  180  docker-compose restart ceph-mon ceph-mgr
+  186  docker-compose restart ceph-mon ceph-mgr
+  187  docker exec ceph-mon ceph -s
+  190  cd ceph-docker-compose/
+  200  git clone https://github.com/VasiliyLiao/ceph-docker-compose.git
+  202  cd ceph-docker-compose/
+  225  docker rm ceph-mds ceph-osd ceph-mgr ceph-mon
+  226  docker ceph-rgw
+  228  docker rm ceph-rgw
+  232  docker exec ceph-mon-1 ceph -s
+  234  docker exec ceph-mon-1 ceph -s
+  237  docker exec ceph-mon-1 ceph mgr module enable dashboard
+  238  docker exec ceph-mon-1 ceph dashboard create-self-signed-cert
+  239  docker exec ceph-mon-1 ceph mgr services
+  241  docker exec ceph-mon-1 ceph -s
+  254  cd ceph-docker-compose/
+  282  docker-compose exec mon1 ceph -s
+  284  docker-compose exec mon1 ceph -s
+  286  docker-compose exec mon1 ceph mgr module enable dashboard
+  287  docker-compose exec mon1 ceph dashboard create-self-signed-cert
+  289  docker-compose exec mon1 ceph -s
+  291  docker-compose exec mon1 ceph dashboard set-rgw-api-access-key 2M5BKERGIHX1W8SAAFYP
+  292  docker-compose exec mon1 ceph dashboard  set-rgw-api-secret-key I87qe8KlsA6Qe2cnwEbnPiYBUzsrJfSUh7zrWuGp
+  293  docker-compose exec mon1 ceph -s
+  294  docker-compose exec mon1 ceph mgr services
+  295  docker-compose exec mon1 ceph -s
+  300  docker-compose exec mon1 ceph -s
+  309  cd ceph-docker-compose/
+  312  cat /repos/ceph/admin/docker-compose.yml 
+  314  docker exec ceph-mon-1 ceph -s
+  315  docker logs -f ceph-rgw-1 
+  317  docker exec ceph-mon-1 ceph -s
+  318  docker logs -f ceph-rgw-1 
+  319  docker exec ceph-mon-1 
+  320  docker exec ceph-mon-1 ceph auth get client.bootstrap-rgw -o /var/lib/ceph/bootstrap-rgw/ceph.keyring
+  321  docker restart ceph-rgw-1 
+  322  docker logs -f ceph-rgw-1 
+  323  docker stop ceph-rgw-1 
+  324  docker rm ceph-rgw-1 
+  330  cd ceph-docker-compose/
+  335  docker exec ceph-mon ceph auth get client.bootstrap-rgw -o /var/lib/ceph/bootstrap-rgw/ceph.keyring
+  336  docker exec ceph-mon-1 ceph auth get client.bootstrap-rgw -o /var/lib/ceph/bootstrap-rgw/ceph.keyring
+  337  docker exec ceph-mon-1 ceph auth get client.bootstrap-osd -o /var/lib/ceph/bootstrap-osd/ceph.keyring
+  341  docker logs -f ceph-docker-compose_rgw1_1
+  342  cat /repos/clouds/docker-ceph/docker-compose.yml 
+  343  docker logs -f ceph-rgw-1 
+  344  docker logs -f ceph-docker-compose_rgw1_1
+  345  docker logs -f ceph-rgw-1 
+  346  docker rm ceph-rgw-1 
+  347  docker stop ceph-rgw-1 
+  348  docker rm ceph-rgw-1 
+  349  docker logs -f ceph-rgw-1 
+  350  docker stop ceph-rgw-1 
+  351  docker rm ceph-rgw-1 
+  352  docker logs -f ceph-rgw-1 
+  364  cd /repos/clouds/docker-ceph/
+  398  cp -rf /tmp/ceph-demo/ceph-docker-compose/docker-compose.yml ./
+  399  cp -rf /tmp/ceph-demo/ceph-docker-compose/.env ./
+  428  docker-compose exec mon1 ceph -s
+  432  docker network connect docker-iaas ceph-fix_mon1_1 
+  437  docker exec -it ceph-fix_mgr_1 bash
+  440  docker-compose exec mon1 ceph -s
+  442  docker exec -it ceph-fix_mgr_1 bash
+  444  docker-compose exec mon1 ceph -s
+  450  docker ps | grep ceph-fix
+  462  docker-compose exec mon1 ceph -s
+  467  cd ceph-docker-compose/
+  471  docker logs -f ceph-fix_mgr_1 
+  473  docker-compose exec mon1 ceph -s
+  476  docker-compose exec mon1 ceph
+  481  docker logs -f ceph-rgw-1 
+  483  docker logs -f ceph-fix_mon1_1
+  484  docker logs -f ceph-fix_mgr_1 
+  487  docker logs -f ceph-fix_mgr_1 
+  491  docker logs -f ceph-fix_mgr_1 
+  493  docker logs -f ceph-fix_mon1_1 
+  495  docker exec -it ceph-fix_mgr_1 bash
+  498  docker logs -f ceph-fix_mon1_1 
+  499  docker logs -f ceph-fix_mgr_1 
+  502  docker exec ceph-mon-1 ceph -s
+  503  cd /repos/clouds/docker-ceph/
+  507  docker exec ceph-mon-1 ceph -s
+  516  cd docker-ceph/
+  566  docker images | grep ceph/daemon
+  567  docker images --filter label=ceph=True --filter dangling=false --format '{{.Repository}} {{.Tag}}'
+  569  docker images --filter label=ceph=True --filter dangling=false --format '{{.Repository}} {{.Tag}}'
+  575  docker images --filter label=ceph=True --filter dangling=false --format '{{.Repository}} {{.Tag}}'
+  576  docker images --filter label=ceph=True --filter dangling=false --format '{{.Repository}}@{{.Digest}}'
+  578  docker images --filter label=ceph=True --filter dangling=false --format '{{.Repository}}@{{.Digest}}'
+  700  cd my-ceph-docker/
+  705  rm -rf my-ceph-docker/
+  762  vim /repos/sandbox/ceph-ansible/site-docker.yml
+  775  docker ps -a | grep ceph-demo
+  786  docker ps | grep  ceph
+  787  docker ps -a | grep  ceph
+  788  docker rm ceph-demo 
+  807  docker exec ceph-mon-devops ceph -s
+  890  vim roles/ceph-docker-common/tasks/release.yml
+  894  vim /repos/sandbox/ceph-ansible/roles/ceph-mon/tasks/docker/copy_configs.yml
+  933  vim roles/ceph-mon/tasks/docker/copy_configs.yml
+  948  vim /repos/sandbox/ceph-ansible/roles/ceph-mon/tasks/docker/start_docker_monitor.yml
+  949  grep -R ceph_docker_version *
+  950  vim roles/ceph-docker-common/tasks/main.yml
+  954  vim /repos/sandbox/ceph-ansible/roles/ceph-mon/tasks/docker/copy_configs.yml
+  956  grep -R ceph_docker_version *
+  959  vim /repos/sandbox/ceph-ansible/roles/ceph-mon/tasks/docker/start_docker_monitor.yml
+  963  grep -R ceph_docker_version *
+  968  grep -R ceph_docker_version *
+  969  vim roles/ceph.ceph-docker-common/tasks/main.yml
+  972  vim roles/ceph.ceph-docker-common/tasks/main.yml
+ 1013  cd /repos/clouds/docker-ceph/
+ 1029  docker exec ceph-mon-1 ceph -s
+ 1043  docker exec ceph-mon-1 ceph -s
+ 1046  docker exec ceph-mon-1 ceph -s
+ 1048  docker exec ceph-mon-1 ceph -s
+ 1051  docker exec ceph-mon-1 ceph -s
+ 1052  docker exec ceph-mon-1 ceph osd pool ls
+ 1053  docker exec ceph-mon-1 ceph osd pool stats
+ 1054  docker exec ceph-mon-1 ceph osd pool get cephfs_data pg_num
+ 1055  docker exec ceph-mon-1 ceph osd pool get cephfs_data pgp_num
+ 1056  docker exec ceph-mon-1 ceph osd pool set cephfs_data pg_num 128
+ 1057  docker exec ceph-mon-1 ceph osd pool set cephfs_data pg_num 64
+ 1058  docker exec ceph-mon-1 ceph osd pool set cephfs_data pgp_num 64
+ 1059  docker exec ceph-mon-1 ceph osd pool get cephfs_data pg_num
+ 1060  docker exec ceph-mon-1 ceph osd pool get cephfs_data pgp_num
+ 1061  docker exec ceph-mon-1 ceph osd pool ls
+ 1062  docker exec ceph-mon-1 ceph osd pool set cephfs_metadata pgp_num 64
+ 1063  docker exec ceph-mon-1 ceph -s
+ 1064  docker exec ceph-mon-1 ceph osd pool set cephfs_metadata pg_num 64
+ 1065  docker exec ceph-mon-1 ceph osd pool set cephfs_metadata pgp_num 64
+ 1066  docker exec ceph-mon-1 ceph -s
+ 1071  docker exec ceph-mon-1 ceph -s
+ 1073  docker logs -f ceph-rgw-1 
+ 1074  docker exec ceph-mon-1 ceph -s
+ 1075  docker exec ceph-mon-1 ceph mgr module enable dashboard
+ 1076  docker exec ceph-mon-1 ceph dashboard create-self-signed-cert
+ 1077  docker exec ceph-mon-1 ceph mgr services
+ 1082  docker exec ceph-mon-1 ceph dashboard set-rgw-api-access-key R6XZ02VPQI40UNDWNGXI
+ 1083  docker exec ceph-mon-1 ceph dashboard set-rgw-api-secret-key Cbb0R2Ou9p67WFyGLRENAorBlIsz8mo5umEeMw9A
+ 1088  history | grep docker | grep ceph
+[root@devops docker-ceph]# 
+

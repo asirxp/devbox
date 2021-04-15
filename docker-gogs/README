@@ -1,0 +1,18 @@
+# docker network connect bridge gogs-server
+
+https://github.com/nginx-proxy/nginx-proxy
+# Multiple Networks
+
+https://forums.docker.com/t/how-to-make-a-service-to-use-multiple-network/80696
+
+[root@devops docker-gogs]# docker-compose up
+Creating gogs-server ... error
+
+ERROR: for gogs-server  network-scoped alias is supported only for containers in user defined networks
+
+ERROR: for gogs  network-scoped alias is supported only for containers in user defined networks
+ERROR: Encountered errors while bringing up the project.
+[root@devops docker-gogs]#
+
+
+https://stackoverflow.com/questions/63306081/docker-reverse-proxy-cant-get-jwilder-nginx-reverse-proxy-work-with-serveral

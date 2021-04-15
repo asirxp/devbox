@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  leanote-db:
+    restart: always
+    container_name: leanote-db
+    image: mongo:3.2.3
+    volumes:
+      - /data/leanote/mongodb:/data/db
+  ######
+  leanote:
+    image: jim3ma/leanote:latest
+    container_name: leanote
+    restart: always
+    depends_on:
+      - leanote-db
+    links:
+      - leanote-db:mongodb
+    volumes:
+      - /data/leanote/leanote:/leanote/data
+      - ./conf/app.conf:/leanote/conf/app.conf
+  ######
+  leanote-httpd:
+    image: httpd:2.4.43
+    container_name: leanote-httpd
+    restart: always
+    ports:
+      - "127.0.0.1:19000:9000"
+    depends_on:
+      - leanote
+    volumes:
+      - ./conf/leanote-httpd/httpd.conf:/usr/local/apache2/conf/httpd.conf
+      - ./conf/leanote-httpd/conf.d:/usr/local/apache2/conf.d
+    environment:
+      VIRTUAL_HOST: leanote.9.112.249.39.nip.io
+      VIRTUAL_PORT: 9000
+networks:
+  default:
+    external:
+      name: devops-nip
